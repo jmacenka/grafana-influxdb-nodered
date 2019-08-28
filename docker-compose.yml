@@ -1,0 +1,37 @@
+version: '3'
+services:
+  influxdb:
+    image: 'influxdb:1.5-alpine'
+    volumes:
+      - influxdb-storage:/var/lib/influxdb
+    ports:
+      - 8086:8086
+    networks:
+      - backend
+  grafana:
+    image: 'grafana/grafana:latest'
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    ports:
+      - 3000:3000
+    networks:
+      - backend
+    depends_on:
+      - influxdb
+  node-red:
+    image: 'nodered/node-red-docker:slim'
+    volumes:
+      # - ./node-red:/data
+      - node-red-storage:/data
+    ports:
+      - 1880:1880
+    networks:
+      - backend
+
+volumes:
+  grafana-storage:
+  influxdb-storage:
+  node-red-storage:
+
+networks:
+  backend:
