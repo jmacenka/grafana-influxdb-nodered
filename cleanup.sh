@@ -1,13 +1,20 @@
 # Remove everything and release ocupied space
 
-read -p "Delete all running Containers? y/n\n"
-if [ $yn == 'y' ]then
+echo "Warning! This will Delete all running containers."
+read -p "Are your sure you want to continue? [y/N] " yn
+if [ $yn == 'y' ]
+then
     sudo docker rm -f $(sudo docker ps -aq)
 fi
+echo ""
 sudo docker volume prune
+echo ""
 sudo docker network prune
-read -p "Remove all container images? y/n\n"
-if [ $yn == 'y' ]then
+echo ""
+echo "Warning! This will Delete all container images."
+read -p "Are your sure you want to continue? [y/N] " yn
+if [ $yn == 'y' ]
+then
     sudo docker rmi -f $(sudo docker images -aq)
 fi
 echo ""
