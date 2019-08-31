@@ -1,0 +1,195 @@
+[
+    {
+        "id": "d3b5bcf4.aaf0f",
+        "type": "mqtt in",
+        "z": "fb628f7d.cf4c98",
+        "name": "",
+        "topic": "FI010/Cabin/CabinHum",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "fbbc8ece.3c37f8",
+        "x": 309,
+        "y": 184,
+        "wires": [
+            [
+                "7b82157c.a0c98c"
+            ]
+        ]
+    },
+    {
+        "id": "7b82157c.a0c98c",
+        "type": "function",
+        "z": "fb628f7d.cf4c98",
+        "name": "MQTT to influxdb",
+        "func": "msg.payload = parseFloat(msg.payload);\nmsg.measurement = msg.topic;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 717,
+        "y": 303,
+        "wires": [
+            [
+                "8d5017d9.1c5128"
+            ]
+        ]
+    },
+    {
+        "id": "3ed43d1e.edc042",
+        "type": "mqtt in",
+        "z": "fb628f7d.cf4c98",
+        "name": "",
+        "topic": "dst/drive/motor/targetSpeed",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "fbbc8ece.3c37f8",
+        "x": 289,
+        "y": 264,
+        "wires": [
+            [
+                "7b82157c.a0c98c"
+            ]
+        ]
+    },
+    {
+        "id": "b44909ed.16802",
+        "type": "mqtt in",
+        "z": "fb628f7d.cf4c98",
+        "name": "",
+        "topic": "magicblock/demo_user/temperature2",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "fbbc8ece.3c37f8",
+        "x": 264,
+        "y": 358,
+        "wires": [
+            [
+                "7b82157c.a0c98c"
+            ]
+        ]
+    },
+    {
+        "id": "8d5017d9.1c5128",
+        "type": "influxdb out",
+        "z": "fb628f7d.cf4c98",
+        "influxdb": "d929eb3e.e55f08",
+        "name": "",
+        "measurement": "",
+        "precision": "",
+        "retentionPolicy": "",
+        "x": 960,
+        "y": 304,
+        "wires": []
+    },
+    {
+        "id": "f366f219.6c7348",
+        "type": "mqtt in",
+        "z": "fb628f7d.cf4c98",
+        "name": "",
+        "topic": "devvences/lux",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "fbbc8ece.3c37f8",
+        "x": 264.00001525878906,
+        "y": 433,
+        "wires": [
+            [
+                "7b82157c.a0c98c"
+            ]
+        ]
+    },
+    {
+        "id": "a8fa025b.eee8d",
+        "type": "mqtt in",
+        "z": "fb628f7d.cf4c98",
+        "name": "",
+        "topic": "servicelocation/bce2f5a2-bafe-4fdc-b711-37eaa360f31a/realtime",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "fba88b0a.01259",
+        "x": 337,
+        "y": 493,
+        "wires": [
+            [
+                "363cb67b.c856aa"
+            ]
+        ]
+    },
+    {
+        "id": "363cb67b.c856aa",
+        "type": "function",
+        "z": "fb628f7d.cf4c98",
+        "name": "parse JSON",
+        "func": "msg.payload = JSON.parse(msg.payload)\n\nmsg1 = {};\nmsg1.measurement = \"totalPower\"\nmsg1.payload = msg.payload['totalPower']\n\nmsg2 = {};\nmsg2.measurement = \"totalReactivePower\"\nmsg2.payload = msg.payload['totalReactivePower']\nreturn [msg1, msg2];",
+        "outputs": 2,
+        "noerr": 0,
+        "x": 705.5,
+        "y": 400,
+        "wires": [
+            [
+                "8d5017d9.1c5128"
+            ],
+            [
+                "8d5017d9.1c5128"
+            ]
+        ],
+        "outputLabels": [
+            "msg1",
+            null
+        ]
+    },
+    {
+        "id": "fbbc8ece.3c37f8",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "mosquitto public",
+        "broker": "test.mosquitto.org",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "d929eb3e.e55f08",
+        "type": "influxdb",
+        "z": "",
+        "hostname": "influxdb",
+        "port": "8086",
+        "protocol": "http",
+        "database": "mydb",
+        "name": "",
+        "usetls": false,
+        "tls": ""
+    },
+    {
+        "id": "fba88b0a.01259",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "",
+        "broker": "test.mosquitto.org",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    }
+]
