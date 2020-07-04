@@ -26,11 +26,24 @@ services:
       - $NODE_RED_PORT:1880
     networks:
       - backend
+  mysql:
+    container_name: mysql
+    restart: always
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_DB_PASSWORD}
+      MYSQL_USER: ${node_red}
+      MYSQL_PASS: ${MYSQL_DB_PASSWORD}
+    volumes:
+      - mysql-storage:/var/lib/mysql
+    networks:
+      - backend
 
 volumes:
   grafana-storage:
   influxdb-storage:
   node-red-storage:
+  mysql-storage:
 
 networks:
   backend:
