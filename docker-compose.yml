@@ -6,6 +6,8 @@ services:
       - influxdb-storage:/var/lib/influxdb
     ports:
       - 8086:8086
+    restart:
+      - always
     networks:
       - backend
   grafana:
@@ -24,6 +26,8 @@ services:
       - node-red-storage:/data
     ports:
       - $NODE_RED_PORT:1880
+    restart:
+      - always
     networks:
       - backend
   mysql:
