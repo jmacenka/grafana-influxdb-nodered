@@ -28,24 +28,24 @@ services:
     restart: always
     networks:
       - backend
-  mysql:
-    container_name: mysql
+  portainer:
+    image: portainer/portainer
+    command: -H unix:///var/run/docker.sock
     restart: always
-    image: mysql:latest
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_DB_PASSWORD}
-      MYSQL_USER: ${node_red}
-      MYSQL_PASS: ${MYSQL_DB_PASSWORD}
+    ports:
+      - $PORTAINER_PORT:9000
+      - 8000:8000
     volumes:
-      - mysql-storage:/var/lib/mysql
-    networks:
-      - backend
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer-storage:/data
 
 volumes:
   grafana-storage:
   influxdb-storage:
   node-red-storage:
   mysql-storage:
+  portainer-storage:
 
 networks:
   backend:
+  frontend:
